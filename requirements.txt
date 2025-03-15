@@ -1,0 +1,37 @@
+# ✅ Flask & Backend
+flask
+flask-wtf
+werkzeug
+flask-login
+flask-sqlalchemy
+flask-bcrypt
+
+# ✅ Google Gemini API
+google-generativeai
+google-auth
+
+# ✅ Whisper & Speech Processing
+openai-whisper
+torch
+torchaudio
+numpy
+scipy
+edge-tts  # For text-to-speech
+
+# ✅ Video & Audio Processing
+moviepy==1.0.3
+ffmpeg-python
+pydub  # Might be needed for audio manipulation
+
+# ✅ PDF Processing
+pdf2image
+pillow
+poppler-utils  # Required for pdf2image (Linux users)
+
+# ✅ System Utilities
+tqdm
+nest_asyncio
+os
+asyncio
+threading
+itertools

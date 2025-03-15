@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sign Up - Video Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- ✅ Dark Mode Toggle -->
+    <div class="theme-switch">
+        <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span class="switch-label">Dark/Light Mode Toggle</span>
+        </button>
+    </div>
+
+    <div class="auth-container">
+        <div class="auth-form">
+            <h2>Sign Up</h2>
+
+            <!-- ✅ Flash Messages for Errors -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <p class="flash-{{ category }}">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form method="POST">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Sign Up</button>
+            </form>
+
+            <p>Already have an account? <a href="{{ url_for('login') }}">Log In</a></p>
+        </div>
+    </div>
+    <footer class="footer-container">
+        <p>&copy; 2025 An-Syu Li. All rights reserved.</p>
+        
+        <p class="footer-link">
+            <a href="https://github.com/Louis-Li-dev" target="_blank">
+                <img src="{{ url_for('static', filename='github-mark-white.png') }}" alt="GitHub Logo">
+                Visit my GitHub
+            </a>
+        </p>
+    </footer>
+    
+    
+    <script>
+                // ✅ Dark Mode Toggle Logic
+                function toggleTheme() {
+            let themeIcon = document.getElementById("theme-icon");
+            let themeToggle = document.getElementById("theme-toggle");
+
+            if (document.documentElement.getAttribute("data-theme") === "dark") {
+                document.documentElement.setAttribute("data-theme", "light");
+                themeIcon.textContent = "🌙";  // Change to Moon
+                themeToggle.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                themeIcon.textContent = "☀️";  // Change to Sun
+                themeToggle.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            }
+        }
+
+        // ✅ Keep User’s Preference After Refresh
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            const themeIcon = document.getElementById("theme-icon");
+            const themeToggle = document.getElementById("theme-toggle");
+
+            if (savedTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+                themeIcon.textContent = "☀️"; // Sun for Dark Mode
+                themeToggle.classList.add("dark-mode");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+                themeIcon.textContent = "🌙"; // Moon for Light Mode
+                themeToggle.classList.remove("dark-mode");
+            }
+        });
+    </script>
+</body>
+</html>

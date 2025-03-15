@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Download Video - Video Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Inline styles for download and delete buttons */
+        .download-container {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid var(--text-color);
+            border-radius: 8px;
+            background-color: var(--section-bg);
+            color: var(--text-color);
+        }
+        .download-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .download-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .download-button {
+            padding: 12px 24px;
+            font-size: 1em;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 5px;
+        }
+        .download-button:hover {
+            background-color: var(--primary-color-hover);
+        }
+        .delete-button {
+            padding: 8px 16px;
+            font-size: 0.9em;
+            border: none;
+            border-radius: 4px;
+            background-color: #d9534f;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .delete-button:hover {
+            background-color: #c9302c;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            font-size: 1em;
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- ✅ Login / Logout Button -->
+    <div class="nav">
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('logout') }}" class="auth-button">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="auth-button">Login / Sign Up</a>
+        {% endif %}
+    </div>
+    <!-- ✅ Dark Mode Toggle -->
+    <div class="theme-switch">
+        <button id="theme-toggle" class="theme-toggle-btn" onclick="toggleTheme()">
+            <span id="theme-icon">🌙</span> <span class="switch-label">Dark/Light Mode Toggle</span>
+        </button>
+    </div>
+
+    <h1>🎬 Video Generator</h1>
+    <h2>📥 Download Your Processed Videos</h2>
+
+    <div id="download-container" class="download-container">
+        {% if is_processing %}
+            <p>🚀 Your video is still being processed. Please wait...</p>
+        {% elif files %}
+            <div class="download-buttons">
+                {% for file in files %}
+                    <div class="download-item">
+                        <button class="download-button" onclick="window.location.href='{{ url_for('download_file', filename=file) }}'">
+                            {{ file }}
+                        </button>
+                        
+                        <button class="delete-button" onclick="deleteFile('{{ file }}')">Remove</button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No videos available for download yet.</p>
+        {% endif %}
+    </div>
+    
+
+    <br>
+    <a href="{{ url_for('index') }}" class="back-link">⬅ Back to Home</a>
+    <footer class="footer-container">
+        <p>&copy; 2025 An-Syu Li. All rights reserved.</p>
+        
+        <p class="footer-link">
+            <a href="https://github.com/Louis-Li-dev" target="_blank">
+                <img src="{{ url_for('static', filename='github-mark-white.png') }}" alt="GitHub Logo">
+                Visit my GitHub
+            </a>
+        </p>
+    </footer>
+    
+    
+    <script>
+        function checkProcessingStatus() {
+            fetch("/download")
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("download-container").innerHTML = new DOMParser()
+                    .parseFromString(html, "text/html")
+                    .getElementById("download-container").innerHTML;
+            });
+        }
+
+        // ✅ Dark Mode Toggle Logic
+        function toggleTheme() {
+            let themeIcon = document.getElementById("theme-icon");
+            let themeToggle = document.getElementById("theme-toggle");
+
+            if (document.documentElement.getAttribute("data-theme") === "dark") {
+                document.documentElement.setAttribute("data-theme", "light");
+                themeIcon.textContent = "🌙";  // Change to Moon
+                themeToggle.classList.remove("dark-mode");
+                localStorage.setItem("theme", "light");
+            } else {
+                document.documentElement.setAttribute("data-theme", "dark");
+                themeIcon.textContent = "☀️";  // Change to Sun
+                themeToggle.classList.add("dark-mode");
+                localStorage.setItem("theme", "dark");
+            }
+        }
+
+        // ✅ Keep User’s Preference After Refresh
+        document.addEventListener("DOMContentLoaded", () => {
+            const savedTheme = localStorage.getItem("theme") || "light";
+            const themeIcon = document.getElementById("theme-icon");
+            const themeToggle = document.getElementById("theme-toggle");
+
+            if (savedTheme === "dark") {
+                document.documentElement.setAttribute("data-theme", "dark");
+                themeIcon.textContent = "☀️"; // Sun for Dark Mode
+                themeToggle.classList.add("dark-mode");
+            } else {
+                document.documentElement.setAttribute("data-theme", "light");
+                themeIcon.textContent = "🌙"; // Moon for Light Mode
+                themeToggle.classList.remove("dark-mode");
+            }
+        });
+
+        // ✅ Delete File Logic
+        function deleteFile(fileName) {
+            if (confirm("Are you sure you want to delete " + fileName + "?")) {
+                fetch("/delete/" + encodeURIComponent(fileName), {
+                    method: "DELETE"
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("File deleted successfully!");
+                        location.reload();
+                    } else {
+                        alert("Error deleting file: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert("Error: " + error);
+                });
+            }
+        }
+            
+        setInterval(checkProcessingStatus, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+/* ✅ Default Theme (Light Mode) */
+:root {
+    --background: #f0f0f0;
+    --text: #222;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --shadow: rgba(0, 0, 0, 0.1);
+    --button-bg: #007BFF;
+    --button-hover: #0056b3;
+    --file-bg: #444;
+    --file-text: white;
+    --border-color: #ddd;
+    --input-bg: #fff;
+    --input-border: #ccc;
+}
+/* Light mode defaults */
+:root {
+    --primary-color: #007BFF;
+    --primary-color-hover: #0056b3;
+    --section-bg: #f9f9f9; /* Light mode background for sections */
+    --text-color: #333;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+    --primary-color: #4a90e2;
+    --primary-color-hover: #357ABD;
+    --section-bg: #2c2c2c; /* Dark mode background for sections */
+    --text-color: #eee;
+}
+
+/* ✅ Dark Mode Theme */
+[data-theme="dark"] {
+    --background: #181818;
+    --text: #e0e0e0;
+    --card-bg: rgba(40, 40, 40, 0.9);
+    --shadow: rgba(255, 255, 255, 0.1);
+    --button-bg: #1e88e5;
+    --button-hover: #1565c0;
+    --file-bg: #333;
+    --file-text: white;
+    --border-color: #444;
+    --input-bg: #252525;
+    --input-border: #666;
+}
+
+/* ✅ Global Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    padding: 20px;
+}
+
+/* ✅ Fancy Title */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+/* ✅ Glassmorphism Form & Cards */
+form, .card {
+    background: var(--card-bg);
+    padding: 20px;
+    margin: auto;
+    width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px var(--shadow);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease-in-out;
+}
+/* ✅ File Name Display */
+.file-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* ✅ Input Fields & Select */
+input, select, button {
+    width: 90%;
+    padding: 12px 0px;
+    margin: 10px 0px;
+    padding-left: 5px;
+    border: 2px solid var(--input-border);
+    border-radius: 8px;
+    font-size: 16px;
+    background: var(--input-bg);
+    color: var(--text);
+    transition: all 0.3s ease-in-out;
+}
+
+/* ✅ Focus Styles */
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--button-bg);
+    box-shadow: 0 0 10px var(--button-bg);
+}
+/* ✅ Dark Mode Toggle Button */
+.theme-switch {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* ✅ Style Toggle Button */
+#theme-toggle {
+    background: var(--button-bg);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    width: 250px;
+    font-size: 16px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ✅ Hover Effect */
+#theme-toggle:hover {
+    background: var(--button-hover);
+}
+
+/* ✅ Dark Mode Button Style */
+.dark-mode {
+    background: #FFD700 !important; /* Yellow in Dark Mode */
+    color: black !important;
+}
+
+/* ✅ File Upload - Ensure Labels are Visible */
+.file-upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.file-upload-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+}
+
+/* ✅ Custom File Input */
+.file-upload {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--file-bg);
+    color: var(--file-text);
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    transition: 0.3s;
+    max-width: 300px;
+    text-align: center;
+}
+
+.file-upload:hover {
+    background: var(--button-hover);
+}
+
+/* ✅ Hide Default File Input */
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* ✅ Ensure Label Text is Shown */
+.file-upload::before {
+    content: "Choose File";
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    color: var(--file-text);
+}
+
+/* ✅ Dark Mode Support */
+[data-theme="dark"] .file-upload {
+    background: #1e1e1e;
+    border-color: #666;
+}
+
+[data-theme="dark"] .file-upload:hover {
+    background: #333;
+}
+
+/* ✅ Buttons */
+button {
+    background: var(--button-bg);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+}
+
+button:hover {
+    background: var(--button-hover);
+    transform: scale(1.05);
+}
+.download-section {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+    padding-right:40px;
+    border: 1px solid var(--text-color);
+    border-radius: 8px;
+    background-color: var(--section-bg);
+    color: var(--text-color);
+}
+
+.download-button {
+    display: inline-block;
+    padding: 12px 12px;
+    font-size: 1em;
+    text-decoration: none;
+    color: #fff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+    background-color: var(--primary-color-hover);
+}
+/* ✅ Global Navigation */
+.nav {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.auth-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.auth-button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* ✅ Login & Signup Forms */
+.auth-form {
+    width: 400px;
+    margin: 30px auto;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--shadow);
+}
+.auth-form form{
+    padding: 20px 0px;
+}
+.auth-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-form input {
+    width: 70%;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 2px solid var(--input-border);
+}
+
+.auth-form button {
+    width: 70%;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.auth-form button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* ✅ Flash Messages */
+.flash-success {
+    color: green;
+    text-align: center;
+}
+
+.flash-error {
+    color: red;
+    text-align: center;
+}
+/* Footer Container - Light Mode (Default) */
+.footer-container {
+    text-align: center;
+    margin-top: 30px;
+    padding: 10px;
+    border-top: 2px solid var(--text-color);
+    background-color: #b5b5b5; /* Default Blue */
+    color: white;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Adds spacing between elements */
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 40px auto;
+    box-shadow: 0px 4px 8px rgba(237, 237, 237, 0.2);
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Dark Mode Support - Changes to Yellow */
+[data-theme="dark"] .footer-container {
+    background-color: #3c3c3c; /* Default Blue */
+    color: rgb(231, 231, 231);
+}
+
+/* Footer Link Style */
+.footer-link a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Dark Mode Footer Link */
+[data-theme="dark"] .footer-link a {
+    color: rgb(223, 221, 221);
+}
+
+/* GitHub Logo Style */
+.footer-link img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover Effects */
+.footer-link a:hover {
+    color: #096fff; /* Lighter blue in light mode */
+}
+
+[data-theme="dark"] .footer-link a:hover {
+    color: #ffaa0c; /* Darker shade in dark mode */
+}
+
+.footer-link img:hover {
+    transform: scale(1.2);
+}
