@@ -35,3 +35,4 @@ os
 asyncio
 threading
 itertools
+git+https://github.com/openai/whisper.git 

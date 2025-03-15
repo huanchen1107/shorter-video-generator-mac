@@ -1,10 +1,10 @@
-from google import genai
+import google.generativeai as genai
+
 import edge_tts
 from tqdm import tqdm
 import time
 import itertools
 import os
-import asyncio
 
 from utility.text import *
 
