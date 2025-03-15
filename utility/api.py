@@ -1,5 +1,4 @@
-import google.generativeai as genai
-
+from google import genai
 import edge_tts
 from tqdm import tqdm
 import time
