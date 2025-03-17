@@ -36,45 +36,49 @@
         {% endwith %}
     </div>
 
-    <!-- ✅ Upload Form (Wrapped Correctly) -->
-    <form id="upload-form" enctype="multipart/form-data">
-        <!-- ✅ Upload Video -->
-        <div class="file-upload-container">
-            <label class="file-upload-label">Upload Video (MP4):</label>
-            <div class="file-upload">
-                <input type="file" name="video" id="video" required onchange="updateFileName(this, 'video-name')">
+    {% if current_user.is_authenticated %}
+        <!-- ✅ Upload Form (Wrapped Correctly) -->
+        <form id="upload-form" enctype="multipart/form-data">
+            <!-- ✅ Upload Video -->
+            <div class="file-upload-container">
+                <label class="file-upload-label">Upload Video (MP4):</label>
+                <div class="file-upload">
+                    <input type="file" name="video" id="video" required onchange="updateFileName(this, 'video-name')">
+                </div>
+                <p id="video-name" class="file-name">No file chosen</p>
             </div>
-            <p id="video-name" class="file-name">No file chosen</p>
-        </div>
 
-        <!-- ✅ Upload PDF -->
-        <div class="file-upload-container">
-            <label class="file-upload-label">Upload PDF:</label>
-            <div class="file-upload">
-                <input type="file" name="pdf" id="pdf" required onchange="updateFileName(this, 'pdf-name')">
+            <!-- ✅ Upload PDF -->
+            <div class="file-upload-container">
+                <label class="file-upload-label">Upload PDF:</label>
+                <div class="file-upload">
+                    <input type="file" name="pdf" id="pdf" required onchange="updateFileName(this, 'pdf-name')">
+                </div>
+                <p id="pdf-name" class="file-name">No file chosen</p>
             </div>
-            <p id="pdf-name" class="file-name">No file chosen</p>
-        </div>
 
-        <!-- ✅ Other Form Inputs -->
-        <label>Number of Pages (or 'all'):</label>
-        <input type="text" name="num_of_pages" placeholder="all"><br>
+            <!-- ✅ Other Form Inputs -->
+            <label>Number of Pages (or 'all'):</label>
+            <input type="text" name="num_of_pages" placeholder="all"><br>
 
-        <label>Select Resolution:</label>
-        <select name="resolution">
-            <option value="144">144p</option>
-            <option value="240">240p</option>
-            <option value="360">360p</option>
-            <option value="480" selected>480p</option>
-            <option value="720">720p</option>
-        </select><br>
+            <label>Select Resolution:</label>
+            <select name="resolution">
+                <option value="144">144p</option>
+                <option value="240">240p</option>
+                <option value="360">360p</option>
+                <option value="480" selected>480p</option>
+                <option value="720">720p</option>
+            </select><br>
 
-        <button type="submit">Generate Video</button>
+            <button type="submit">Generate Video</button>
 
-        <!-- ✅ Processing Status -->
-        <p id="processing" style="display: none;">⏳ Processing... Please wait!</p>
-    </form>
-
+            <!-- ✅ Processing Status -->
+            <p id="processing" style="display: none;">⏳ Processing... Please wait!</p>
+        </form>
+    {% else %}
+        <!-- ✅ Show a message or prompt to log in instead of the form -->
+        <p>You must be logged in to upload a video. <a href="{{ url_for('login') }}">Login here</a>.</p>
+    {% endif %}
     <!-- ✅ Improved Download Section -->
     <div id="download-section" class="download-section">
         <h2>Available Downloads</h2>

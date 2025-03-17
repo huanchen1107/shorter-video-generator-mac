@@ -7,14 +7,14 @@ flask-sqlalchemy
 flask-bcrypt
 
 # ✅ Google Gemini API
-google-generativeai
+google-genai
 google-auth
 
-# ✅ Whisper & Speech Processing
-openai-whisper
-torch
-torchaudio
-numpy
+# ✅ Whisper & Speech Processing (GPU Supported)
+--extra-index-url https://download.pytorch.org/whl/cu121  # Use CUDA 12.1 (change if needed)
+torch==2.0.0+cu121 --no-cache-dir
+torchaudio==2.0.0+cu121 --no-cache-dir
+numpy==1.26.4
 scipy
 edge-tts  # For text-to-speech
 
@@ -31,8 +31,13 @@ poppler-utils  # Required for pdf2image (Linux users)
 # ✅ System Utilities
 tqdm
 nest_asyncio
-os
+requests
+python-dotenv
 asyncio
 threading
 itertools
-git+https://github.com/openai/whisper.git 
+
+# ✅ OpenAI Whisper (Install from GitHub for latest features)
+git+https://github.com/openai/whisper.git
+ipython
+PyDF2
