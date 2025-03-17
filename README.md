@@ -11,7 +11,7 @@ git clone https://github.com/Louis-Li-dev/Shorter.Video.Generator.git
 
 ---
 
-### Step 2: Build Dependencies (Linux Only)
+### Step 2: Build Dependencies (Linux Only, Windows Users Can Skip This One)
 
 For a newly created VM, run the setup script to install dependencies (including *ffmpeg* and virtual environments):
 
