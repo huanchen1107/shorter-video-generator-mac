@@ -74,7 +74,7 @@ Manage your generated results by collecting or removing files from the interface
 
 ---
 
-References
+# References
 Gemini (Gemini 2.0 Flash)
 If you are specifically using Gemini 2.0 Flash through Google Cloud, please refer to the official Google Cloud documentation for detailed setup instructions and licensing. Below is a placeholder citation:
 
