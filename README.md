@@ -76,14 +76,9 @@ Manage your generated results by collecting or removing files from the interface
 
 # References
 Gemini (Gemini 2.0 Flash)
-If you are specifically using Gemini 2.0 Flash through Google Cloud, please refer to the official Google Cloud documentation for detailed setup instructions and licensing. Below is a placeholder citation:
 
 Google Cloud. (2023). Gemini 2.0 Flash: Next-Generation Language Model. Retrieved from [https://cloud.google.com/](https://aistudio.google.com/prompts/new_chat)
 
-(Replace the URL with the direct Gemini 2.0 Flash documentation link if available.)
-
 Whisper
-For citing Whisper, you can use the following format based on OpenAI's guidelines:
-
 OpenAI. (2022). Whisper: A General-Purpose Speech Recognition Model. Retrieved from [https://github.com/openai/whisper](https://github.com/openai/whisper)
 
