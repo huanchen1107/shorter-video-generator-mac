@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, send_file,
 import os
 import asyncio
 import threading
+import platform
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -16,7 +17,7 @@ app.config["UPLOAD_FOLDER"] = "uploads"
 app.config["OUTPUT_FOLDER"] = "output"
 app.config["ALLOWED_EXTENSIONS"] = {"mp4", "pdf"}
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///users.db"
-
+system_os = platform.system()
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -59,7 +60,7 @@ def run_processing(video_path, pdf_path, num_of_pages, resolution, user_folder):
         loop.run_until_complete(api(
             video_path=video_path,
             pdf_file_path=pdf_path,
-            poppler_path="./poppler/poppler-0.89.0/bin",
+            poppler_path  = None if system_os == "Windows" else "./poppler/poppler-0.89.0/bin", 
             output_audio_dir=os.path.join(user_folder, 'audio'),
             output_video_dir=os.path.join(user_folder, 'video'),
             output_text_path=os.path.join(user_folder, "text_output.txt"),

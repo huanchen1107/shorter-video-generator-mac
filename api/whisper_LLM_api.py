@@ -106,6 +106,7 @@ async def api(
     print("✅ All audio responses generated as temporary files!")
     # ✅ Step 7: Convert PDF pages to images
     print(f"🖼️ Converting {total_pages} PDF pages to images...")
+
     pages = convert_from_path(
         pdf_file_path,
         poppler_path=poppler_path,
