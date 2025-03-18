@@ -39,8 +39,8 @@ bash setup.sh
 
 ### Step 4: Create a `.env` file in the root direcotry
 
-Go to your [**Google AI Studio**](https://aistudio.google.com/) and create your own API key.
-
+- Go to your [**Google AI Studio**](https://aistudio.google.com/) and create your own API key.
+- Set admin account number and password.
 ---
 ### Step 5: Run the Server
 
@@ -52,25 +52,13 @@ python app.py
 
 ---
 
+
+
 # Expected Result
 
-## Main Interface
-
-After uploading your MP4 file and the corresponding PDF slides, simply click the **Generate** button to initiate the process.
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/f943eb89-2485-473b-b4c0-6d6c09755035" alt="Main Interface" style="height:500px; width:auto;"/>
-</div>
-
----
-
-## Downloadable Files Interface
-
-Manage your generated results by collecting or removing files from the interface.
-
-<div align="center">
-  <img src="https://github.com/user-attachments/assets/a2038638-d579-4907-bb4a-1f4c36e1cdac" alt="Downloadable Files Interface" style="height:500px; width:auto;"/>
-</div>
+| Main Interface | Downloadable Files Interface | Admin Interface for File Management |
+| -------------- | ---------------------------- | ----------------------------------- |
+| <img src="https://github.com/user-attachments/assets/f943eb89-2485-473b-b4c0-6d6c09755035" alt="Main Interface" /> | <img src="https://github.com/user-attachments/assets/a2038638-d579-4907-bb4a-1f4c36e1cdac" alt="Downloadable Files Interface" /> | <img src="https://github.com/user-attachments/assets/f6fd6f50-768c-4735-8e39-9e0528fc6445" alt="Admin Interface for File Management"/> |
 
 ---
 
