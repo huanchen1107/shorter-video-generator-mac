@@ -77,7 +77,7 @@ async def api(
 
     # ✅ Detect total number of pages if 'all' is set
     if num_of_pages == "all":
-        total_pages = len(convert_from_path(pdf_file_path, poppler_path=poppler_path, threads=10))
+        total_pages = len(convert_from_path(pdf_file_path, poppler_path=poppler_path))
         print(f"📚 Detected total pages: {total_pages}")
     else:
         total_pages = int(num_of_pages)  # Convert to integer
