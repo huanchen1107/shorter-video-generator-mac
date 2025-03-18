@@ -58,11 +58,14 @@ def run_processing(video_path, pdf_path, num_of_pages, resolution, user_folder):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    status_file = os.path.join(user_folder, "processing.txt")
+    video_folder = os.path.join(user_folder, 'video')
+    os.makedirs(video_folder, exist_ok=True)
 
+    status_file = os.path.join(video_folder, "processing.txt")
     # ✅ Mark processing as ongoing
     with open(status_file, "w") as f:
         f.write("processing")
+
 
     try:
         loop.run_until_complete(api(

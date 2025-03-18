@@ -32,7 +32,7 @@ def transcribe_audio(audio_path, model_size="medium"):  # Load large Whisper mod
 
     model = whisper.load_model(model_size).to(device)
     print("Start transcribing...")
-    result = model.transcribe(audio_path, fp16=False,  temperature=0)
+    result = model.transcribe(audio_path)
     print("Transcription:")
     print(result.get("text", "No transcription available."))
     return result

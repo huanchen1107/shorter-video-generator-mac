@@ -69,7 +69,7 @@ async def api(
 
     # ✅ Step 2: Transcribe the audio
     print("📝 Transcribing audio to text...")
-    script = transcribe_audio(audio, model_size="tiny")['text']
+    script = transcribe_audio(audio, model_size="base")['text']
 
     # ✅ Step 4: Get API key and process PDF
     keys = eval(os.getenv("api_key"))
@@ -77,7 +77,9 @@ async def api(
 
     # ✅ Detect total number of pages if 'all' is set
     if num_of_pages == "all":
-        total_pages = len(convert_from_path(pdf_file_path, poppler_path=poppler_path))
+        total_pages = len(convert_from_path(
+            pdf_file_path, poppler_path=poppler_path,thread_count=10
+        ))
         print(f"📚 Detected total pages: {total_pages}")
     else:
         total_pages = int(num_of_pages)  # Convert to integer
