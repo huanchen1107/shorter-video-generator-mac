@@ -70,7 +70,6 @@ python app.py
 - Whisper
   - OpenAI. (2022). Whisper: A General-Purpose Speech Recognition Model. Retrieved from [https://github.com/openai/whisper](https://github.com/openai/whisper)
 - Kokoro TTS (text to speech)
-  - hexgrad/Kokoro-82M.  
-     Retrieved from [https://github.com/hexgrad/kokoro](https://github.com/hexgrad/kokoro)
+  - hexgrad/Kokoro-82M. Retrieved from [https://github.com/hexgrad/kokoro](https://github.com/hexgrad/kokoro)
     
 
