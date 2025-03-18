@@ -3,12 +3,16 @@ import os
 import asyncio
 import threading
 import platform
+import shutil
+import secrets
 from werkzeug.utils import secure_filename
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 # from flask_mail import Mail, Message
 from api.whisper_LLM_api import api
+from dotenv import load_dotenv
+load_dotenv()
 
 # ✅ Flask Configuration
 app = Flask(__name__)
@@ -26,6 +30,10 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
+
+# ✅ Admin Credentials
+admin_account = os.getenv("admin_account")
+admin_password = os.getenv("admin_password")
 
 # ✅ Ensure Upload & Output Folders Exist
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
@@ -60,7 +68,7 @@ def run_processing(video_path, pdf_path, num_of_pages, resolution, user_folder):
         loop.run_until_complete(api(
             video_path=video_path,
             pdf_file_path=pdf_path,
-            poppler_path  = None if system_os == "Windows" else "./poppler/poppler-0.89.0/bin", 
+            poppler_path=None if system_os == "Windows" else "./poppler/poppler-0.89.0/bin", 
             output_audio_dir=os.path.join(user_folder, 'audio'),
             output_video_dir=os.path.join(user_folder, 'video'),
             output_text_path=os.path.join(user_folder, "text_output.txt"),
@@ -81,7 +89,7 @@ def run_processing(video_path, pdf_path, num_of_pages, resolution, user_folder):
 def index():
     return render_template("index.html")
 
-# ✅ Login & Signup Routes (Already Implemented)
+# ✅ Signup Route
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -101,13 +109,30 @@ def signup():
 
     return render_template("signup.html")
 
+# ✅ Login Route
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        user = User.query.filter_by(email=email).first()
 
+        # ✅ Admin Login Check
+        if email == admin_account and password == admin_password:
+            user = User.query.filter_by(email=admin_account).first()
+            if not user:
+                admin_hashed = bcrypt.generate_password_hash(admin_password).decode("utf-8")
+                user = User(email=admin_account, password=admin_hashed)
+                db.session.add(user)
+                db.session.commit()
+            login_user(user)
+            # ✅ Generate temporary token for admin dashboard
+            token = secrets.token_hex(16)
+            session["admin_token"] = token
+            flash("✅ Admin logged in successfully!", "success")
+            return redirect(url_for("admin_dashboard", token=token))
+
+        # ✅ Normal User Login
+        user = User.query.filter_by(email=email).first()
         if user and bcrypt.check_password_hash(user.password, password):
             login_user(user)
             flash("✅ Logged in successfully!", "success")
@@ -117,17 +142,16 @@ def login():
 
     return render_template("login.html")
 
-
-
-
+# ✅ Logout Route
 @app.route("/logout")
 @login_required
 def logout():
+    session.pop("admin_token", None)  # Clear admin token if exists
     logout_user()
     flash("🔓 Logged out successfully.", "success")
     return redirect(url_for("index"))
 
-# ✅ Process Video (Secure)
+# ✅ Process Video Route
 @app.route("/process", methods=["POST"])
 @login_required
 def process_video():
@@ -174,18 +198,13 @@ def download():
 def download_file(filename):
     user_folder = os.path.join(app.config["OUTPUT_FOLDER"], str(current_user.id), 'video')
 
-    # ✅ Ensure filename is not empty
     if not filename:
         flash("⚠️ Invalid file request!", "error")
         return redirect(url_for("download"))
 
-    # ✅ Secure the filename and remove any unwanted spaces
-    secure_file = secure_filename(filename.strip())  
-
-    # ✅ Construct full file path
+    secure_file = secure_filename(filename.strip())
     file_path = os.path.join(user_folder, secure_file)
 
-    # ✅ Debugging Output
     print(f"📂 Looking for: {file_path}")
     print(f"🛠️ File Exists: {os.path.exists(file_path)}")
 
@@ -194,7 +213,6 @@ def download_file(filename):
     else:
         flash("⚠️ File not found!", "error")
         return redirect(url_for("download"))
-
 
 # ✅ Delete File Endpoint (User Restricted)
 @app.route("/delete/<filename>", methods=["DELETE"])
@@ -210,6 +228,36 @@ def delete_file(filename):
             return jsonify({"status": "error", "message": "File not found."}), 404
     except Exception as e:
         return jsonify({"status": "error", "message": f"Error deleting file: {str(e)}"}), 500
+
+# ✅ Admin Dashboard: List All Users with Temporary Token
+@app.route("/admin/<token>")
+@login_required
+def admin_dashboard(token):
+    if current_user.email != admin_account or session.get("admin_token") != token:
+        flash("⚠️ Unauthorized access!", "error")
+        return redirect(url_for("index"))
+    users = User.query.all()
+    return render_template("admin_dashboard.html", users=users, token=token, admin_account=admin_account)
+
+# ✅ Admin Delete User Endpoint with Temporary Token
+@app.route("/admin/<token>/delete_user/<int:user_id>", methods=["POST"])
+@login_required
+def admin_delete_user(token, user_id):
+    if current_user.email != admin_account or session.get("admin_token") != token:
+        flash("⚠️ Unauthorized action!", "error")
+        return redirect(url_for("index"))
+    user = User.query.get(user_id)
+    if user:
+        # Delete the user's output folder if it exists
+        user_folder = os.path.join(app.config["OUTPUT_FOLDER"], str(user.id))
+        if os.path.exists(user_folder):
+            shutil.rmtree(user_folder)
+        db.session.delete(user)
+        db.session.commit()
+        flash("✅ User deleted successfully!", "success")
+    else:
+        flash("⚠️ User not found!", "error")
+    return redirect(url_for("admin_dashboard", token=token))
 
 # ✅ Initialize Database
 with app.app_context():
