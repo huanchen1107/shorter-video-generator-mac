@@ -18,7 +18,9 @@ if parent_dir not in sys.path:
 from utility.audio import *
 from utility.pdf import *
 from utility.api import *
-
+from dotenv import load_dotenv
+load_dotenv()
+THREAD_COUNT = int(os.getenv("THREAD_COUNT"))
 # ✅ Apply async fix for Jupyter Notebook environments
 nest_asyncio.apply()
 
@@ -53,6 +55,7 @@ async def api(
     output_text_path: str,
     num_of_pages="all",
     resolution: int = 480,  # Default to 480p
+    tts_model: str = 'edge'
 ):
     print("\n🚀 Starting the process...\n")
     ensure_directories_exist(output_audio_dir, output_video_dir, os.path.dirname(output_text_path))
@@ -78,12 +81,16 @@ async def api(
     # ✅ Detect total number of pages if 'all' is set
     if num_of_pages == "all":
         total_pages = len(convert_from_path(
-            pdf_file_path, poppler_path=poppler_path,thread_count=10
+            pdf_file_path, poppler_path=poppler_path,thread_count=THREAD_COUNT
         ))
         print(f"📚 Detected total pages: {total_pages}")
     else:
-        total_pages = int(num_of_pages)  # Convert to integer
-
+        try:
+            total_pages = int(num_of_pages)  # Convert to integer
+        except Exception:
+            total_pages = len(convert_from_path(
+                pdf_file_path, poppler_path=poppler_path, thread_count=THREAD_COUNT
+            ))
     print(f"📃Selected Number of Pages: {num_of_pages}")
     text_array = pdf_to_text_array(pdf_file_path)
 
@@ -99,8 +106,11 @@ async def api(
     tasks = []
     for idx, response in enumerate(tqdm(response_array, desc="Processing Audio")):
         filename = f"audio_{idx}.mp3"  # Unique name for each file
-        tasks.append(edge_tts_example(response, output_audio_dir, filename))  # Save in specified dir
-
+        if tts_model == 'edge':
+            tasks.append(edge_tts_example(response, output_audio_dir, filename))  # Save in specified dir
+        elif tts_model == 'kokoro':
+            tasks.append(kokoro_tts_example(response, output_audio_dir, filename))  # Save in specified dir
+            
 
     # ✅ Gather all async tasks
     audio_files = await asyncio.gather(*tasks)
@@ -114,7 +124,7 @@ async def api(
         poppler_path=poppler_path,
         first_page=1,
         last_page=total_pages,
-        thread_count=10
+        thread_count=THREAD_COUNT
     )
     print("🎬 Creating video clips...")
     video_clips = []
@@ -154,7 +164,7 @@ async def api(
         logger=None,
         audio_bitrate="50k",
         write_logfile=False,
-        threads=10,
+        threads=THREAD_COUNT,
         ffmpeg_params=[
             "-b:v", "5M",  # ✅ Controls bitrate (~5Mbps for faster encoding)
             "-preset", "ultrafast",  # ✅ Faster encoding, slightly lower quality

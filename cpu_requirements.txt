@@ -47,6 +47,14 @@ pydub
 # ------------------------------------------------------------------------
 pdf2image
 pillow
+poppler-utils  # Required for pdf2image (Linux users)
+
+
+# ------------------------------------------------------------------------
+# kokoro
+# ------------------------------------------------------------------------
+kokoro==0.8.4
+misaki[zh]==0.8.4
 
 # ------------------------------------------------------------------------
 # System Utilities
@@ -55,5 +63,8 @@ tqdm
 nest_asyncio
 requests
 python-dotenv
+asyncio
+threading
+itertools
+PyDF2==3.0.1
 ipython
-PyDF2

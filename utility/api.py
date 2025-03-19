@@ -4,8 +4,65 @@ from tqdm import tqdm
 import time
 import itertools
 import os
-
+import torch
+import numpy as np
 from utility.text import *
+from kokoro import KPipeline
+import soundfile as sf
+
+async def kokoro_tts_example(text, output_dir, filename, voice="zm_yunyang"):
+    """
+    Generates speech from text using Kokoro's KPipeline and saves it to a specific directory.
+    
+    :param text: Text to be converted to speech.
+    :param output_dir: Directory where the audio file will be saved.
+    :param filename: Name of the audio file.
+    :param voice: The voice model to use.
+    :return: Full path of the saved audio file.
+    """
+    if not text or text.strip() == "":
+        print("⚠️ Warning: Received empty text for speech synthesis.")
+        return None  # Skip empty text
+
+    # Ensure the output directory exists
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Define the full file path (using .wav for this example)
+    output_file_path = os.path.join(output_dir, filename)
+    
+    # Initialize the KPipeline with an explicit repo_id to suppress the warning
+    pipeline_instance = KPipeline(lang_code='z', repo_id="hexgrad/Kokoro-82M")
+    
+    try:
+        print(f"🔊 Generating speech using voice: {voice}")
+        # Create a generator that yields (graphemes, phonemes, audio)
+        generator = pipeline_instance(
+            text, voice=voice, speed=1, split_pattern=r'\n+'
+        )
+        
+        # Merge audio segments (convert Tensors to NumPy arrays if needed)
+        audio_segments = []
+        for i, (_, _, audio) in enumerate(generator):
+            # Check if the audio segment is a Tensor and convert it to a NumPy array
+            if isinstance(audio, torch.Tensor):
+                audio_np = audio.detach().cpu().numpy()
+            else:
+                audio_np = audio
+            audio_segments.append(audio_np)
+        
+        if audio_segments:
+            # Concatenate the segments along the first dimension
+            final_audio = np.concatenate(audio_segments, axis=0)
+            sf.write(output_file_path, final_audio, 24000)
+            print(f"💾 Saved TTS audio to: {output_file_path}")
+            return output_file_path
+        else:
+            print("⚠️ No audio was generated.")
+            return None
+
+    except Exception as e:
+        print(f"❌ Error generating speech: {e}")
+        return None
 
 async def edge_tts_example(text, output_dir, filename, voice="zh-CN-YunxiNeural"):
     """
@@ -38,6 +95,7 @@ async def edge_tts_example(text, output_dir, filename, voice="zh-CN-YunxiNeural"
         return None
 
     return output_file_path  # Return the saved file path
+
 
 
 def gemini_chat(text_array=None, script=None, clients=None, keys=None, max_retries=100):

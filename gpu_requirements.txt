@@ -28,6 +28,13 @@ pdf2image
 pillow
 poppler-utils  # Required for pdf2image (Linux users)
 
+# kokoro
+kokoro==0.8.4
+misaki[zh]==0.8.4
+
+# ✅ OpenAI Whisper (Install from GitHub for latest features)
+git+https://github.com/openai/whisper.git
+
 # ✅ System Utilities
 tqdm
 nest_asyncio
@@ -36,8 +43,5 @@ python-dotenv
 asyncio
 threading
 itertools
-
-# ✅ OpenAI Whisper (Install from GitHub for latest features)
-git+https://github.com/openai/whisper.git
+PyDF2==3.0.1
 ipython
-PyDF2
