@@ -66,13 +66,17 @@ async def api(
 
     TARGET_WIDTH, TARGET_HEIGHT = RESOLUTION_MAP[resolution]
     print(f"📏 Selected Resolution: {resolution}p ({TARGET_WIDTH}x{TARGET_HEIGHT})")
-    # ✅ Step 1: Convert MP4 to MP3
-    print(f"🎵 Converting MP4 to MP3: {video_path}")
-    audio = convert_mp4_to_mp3(video_path)
+    if video_path is None:
+        print(f"No MP4 passed in. Go on processing without video.")
+        script = "No video for this file. Please use the passage only to generate."
+    else:
+        # ✅ Step 1: Convert MP4 to MP3
+        print(f"🎵 Converting MP4 to MP3: {video_path}")
+        audio = convert_mp4_to_mp3(video_path)
 
-    # ✅ Step 2: Transcribe the audio
-    print("📝 Transcribing audio to text...")
-    script = transcribe_audio(audio, model_size="base")['text']
+        # ✅ Step 2: Transcribe the audio
+        print("📝 Transcribing audio to text...")
+        script = transcribe_audio(audio, model_size="base")['text']
 
     # ✅ Step 4: Get API key and process PDF
     keys = eval(os.getenv("api_key"))

@@ -168,12 +168,15 @@ def process_video():
         resolution = request.form.get("resolution")
         num_of_pages = request.form.get('num_of_pages')
         TTS_model_type = request.form.get("TTS_model_type")
-    if not video_file or not pdf_file:
-        return jsonify({"status": "error", "message": "⚠️ Please upload both a video and a PDF file."}), 400
-
-    video_path = os.path.join(user_folder, secure_filename(video_file.filename))
+    if not pdf_file:
+        return jsonify({"status": "error", "message": "⚠️ Please upload a PDF file."}), 400
+    if video_file and video_file.filename != "":
+        video_path = os.path.join(user_folder, secure_filename(video_file.filename))
+        video_file.save(video_path)
+    else:
+        video_path = None
+        app.logger.info("No video file uploaded; proceeding without video.")
     pdf_path = os.path.join(user_folder, secure_filename(pdf_file.filename))
-    video_file.save(video_path)
     pdf_file.save(pdf_path)
 
     processing_thread = threading.Thread(target=run_processing, args=(video_path, pdf_path, num_of_pages, resolution, user_folder, TTS_model_type))
@@ -269,4 +272,4 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False, threaded=True)
+    app.run(host="0.0.0.0", port=5001, debug=False, threaded=True)
