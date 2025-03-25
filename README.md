@@ -1,4 +1,9 @@
+# Overview
+*This system is specifically designed for you to upload audio or audio and pdf files for AI-Generated Content*
 
+By taking advantage of this system, you can
+- Generate sample presentation with AI-TTS-generated speech.
+- Shorten the existing video for clarity.
 # Installation
 
 ### Step 1: Clone the Repository
