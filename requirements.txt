@@ -2,8 +2,8 @@
 # Use the CPU-only index for PyTorch and Torchaudio
 # ------------------------------------------------------------------------
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.0.0+cpu --no-cache-dir
-torchaudio==2.0.0+cpu --no-cache-dir
+torch==2.0.0
+torchaudio==2.0.0
 
 # ------------------------------------------------------------------------
 # Flask & Backend
@@ -46,7 +46,7 @@ pydub
 # NOTE: poppler-utils must be installed at the system level, not via pip.
 # ------------------------------------------------------------------------
 pdf2image
-pillow
+pillow==11.1.0
 poppler-utils  # Required for pdf2image (Linux users)
 
 
@@ -63,8 +63,8 @@ tqdm
 nest_asyncio
 requests
 python-dotenv
-asyncio
-threading
-itertools
-PyDF2==3.0.1
+PyPDF2==3.0.1
 ipython
+
+transformers==4.30.0
+pysoundfile
