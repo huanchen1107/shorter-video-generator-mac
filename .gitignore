@@ -4,3 +4,6 @@ video/
 audio/
 output/*
 *.pyc
+venv/
+venv2/
+__pycache__/
