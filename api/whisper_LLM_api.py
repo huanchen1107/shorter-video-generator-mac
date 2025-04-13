@@ -206,7 +206,7 @@ if __name__ == "__main__":
     asyncio.run(api(
         video_path="../video/video1.mp4",
         pdf_file_path="../pdf/1_Basics_1.pdf",
-        poppler_path="../poppler/poppler-0.89.0/bin",
+        poppler_path=None,
         output_audio_dir="../output_audio",
         output_text_path="../output_text/text_output.txt",
         num_of_pages=1,  # Set to 'all' for full PDF processing
