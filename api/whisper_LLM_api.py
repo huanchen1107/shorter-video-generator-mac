@@ -112,8 +112,6 @@ async def api(
         filename = f"audio_{idx}.mp3"  # Unique name for each file
         if tts_model == 'edge':
             tasks.append(edge_tts_example(response, output_audio_dir, filename))  # Save in specified dir
-        elif tts_model == 'kokoro':
-            tasks.append(kokoro_tts_example(response, output_audio_dir, filename))  # Save in specified dir
             
 
     # ✅ Gather all async tasks

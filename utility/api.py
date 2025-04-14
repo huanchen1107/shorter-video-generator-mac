@@ -7,9 +7,11 @@ import os
 import torch
 import numpy as np
 from utility.text import *
-from kokoro import KPipeline
+#from kokoro import KPipeline
 import soundfile as sf
 
+
+'''
 async def kokoro_tts_example(text, output_dir, filename, voice="zm_yunyang"):
     """
     Generates speech from text using Kokoro's KPipeline and saves it to a specific directory.
@@ -63,6 +65,7 @@ async def kokoro_tts_example(text, output_dir, filename, voice="zm_yunyang"):
     except Exception as e:
         print(f"❌ Error generating speech: {e}")
         return None
+'''
 
 async def edge_tts_example(text, output_dir, filename, voice="zh-CN-YunxiNeural"):
     """
