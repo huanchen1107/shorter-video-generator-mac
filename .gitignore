@@ -6,4 +6,5 @@ output/*
 *.pyc
 venv/
 venv2/
+venv3/
 **/__pycache__/
