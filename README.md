@@ -1,4 +1,5 @@
-This repository is forked from [*shorter-video-generator*](https://github.com/Louis-Li-dev/Shorter.Video.Generator.git), and it is optimized for macOS.
+**IMPORTANT NOTICE:**  
+This project was developed by [**Louis-Li-dev**](https://github.com/Louis-Li-dev). The original project can be found at [**Shorter.Video.Generator**](https://github.com/Louis-Li-dev/Shorter.Video.Generator). This fork is specifically tailored for macOS usage.
 
 # Overview
 *This system is specifically designed for you to upload audio or audio and pdf files for AI-Generated Content*
