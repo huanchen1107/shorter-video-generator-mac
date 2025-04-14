@@ -6,6 +6,24 @@ This repository is forked from [*shorter-video-generator*](https://github.com/Lo
 By taking advantage of this system, you can
 - Generate sample presentation with AI-TTS-generated speech.
 - Shorten the existing video for clarity.
+
+---
+
+# Prerequisites
+
+Before installing Python dependencies, ensure that your system has the following tools installed:
+
+- **Homebrew**: [Installation instructions](https://brew.sh/)
+- **ffmpeg**: Used for video processing  
+  ```bash
+  brew install ffmpeg
+  ```
+- **poppler**: Contains tools (like pdftoppm) required for PDF processing  
+  ```bash
+  brew install poppler
+  ```
+
+---
 # Installation
 
 ### Step 1: Clone the Repository
@@ -13,43 +31,23 @@ By taking advantage of this system, you can
 Clone the project repository from GitHub:
 
 ```bash
-git clone https://github.com/Louis-Li-dev/Shorter.Video.Generator.git
+git clone https://github.com/YANGCHIHUNG/shorter-video-generator-mac.git
 ```
 
 ---
-
-### Step 2: Build Dependencies (Linux Only, Windows Users Can Skip This One)
-
-For a newly created VM, run the setup script to install dependencies (including *ffmpeg* and virtual environments):
-
-```bash
-bash setup.sh
-```
-
----
-
-### Step 3: Install Dependencies
-
-- **For CPU-only Machines:**
+### Step 2: Install Dependencies
 
   ```bash
-  pip install -r cpu_requirements.txt
+  pip install -r requirements.txt
   ```
-
-- **For Machines with GPU Support:**
-
-  ```bash
-  pip install -r gpu_requirements.txt
-  ```
-
 ---
 
-### Step 4: Create a `.env` file in the root direcotry
+### Step 3: Create a `.env` file in the root direcotry
 
 - Go to your [**Google AI Studio**](https://aistudio.google.com/) and create your own API key.
 - Set admin account number and password.
 ---
-### Step 5: Run the Server
+### Step 4: Run the Server
 
 Start the server by running the `app.py` file located in the root directory.
 
@@ -58,8 +56,6 @@ python app.py
 ```
 
 ---
-
-
 
 # Expected Result
 
@@ -76,7 +72,3 @@ python app.py
 
 - Whisper
   - OpenAI. (2022). Whisper: A General-Purpose Speech Recognition Model. Retrieved from [https://github.com/openai/whisper](https://github.com/openai/whisper)
-- Kokoro TTS (text to speech)
-  - hexgrad/Kokoro-82M. Retrieved from [https://github.com/hexgrad/kokoro](https://github.com/hexgrad/kokoro)
-    
-
