@@ -110,9 +110,7 @@ async def api(
     tasks = []
     for idx, response in enumerate(tqdm(response_array, desc="Processing Audio")):
         filename = f"audio_{idx}.mp3"  # Unique name for each file
-        if tts_model == 'edge':
-            tasks.append(edge_tts_example(response, output_audio_dir, filename))  # Save in specified dir
-            
+        tasks.append(edge_tts_example(response, output_audio_dir, filename, tts_model))   
 
     # ✅ Gather all async tasks
     audio_files = await asyncio.gather(*tasks)

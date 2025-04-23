@@ -67,7 +67,7 @@ async def kokoro_tts_example(text, output_dir, filename, voice="zm_yunyang"):
         return None
 '''
 
-async def edge_tts_example(text, output_dir, filename, voice="zh-CN-YunxiNeural"):
+async def edge_tts_example(text, output_dir, filename, voice):
     """
     Generates speech from text and saves it to a specific directory.
     
