@@ -9,6 +9,7 @@ import numpy as np
 from utility.text import *
 #from kokoro import KPipeline
 import soundfile as sf
+import textwrap
 
 
 '''
@@ -67,7 +68,7 @@ async def kokoro_tts_example(text, output_dir, filename, voice="zm_yunyang"):
         return None
 '''
 
-async def edge_tts_example(text, output_dir, filename, voice):
+async def edge_tts_example(text, output_dir, filename, voice="en-US-KaiNeural"):
     """
     Generates speech from text and saves it to a specific directory.
     
@@ -125,13 +126,15 @@ def gemini_chat(text_array=None, script=None, clients=None, keys=None, max_retri
             try:
                 response = client.models.generate_content(
                     model="gemini-2.0-flash",
-                    contents=f'''以下是我們的完整講稿：{script}  
+                    contents=textwrap.dedent(f'''\
+                    以下是我們的完整講稿：{script}  
                     以下是第 {count} 張 Ptt 內容，前面幾張已經處理完畢：{text}  
-                    請仔細閱讀上述資料，並從中萃取與此張投影片直接相關的重點，生成一段針對該投影片的精簡講稿，每段講稿儘量在 30 秒內講完。  
+                    根據上述資料，並從中萃取與此張投影片直接相關的重點，生成一段針對該投影片的講稿，每段講稿儘量在 15 秒內講完。  
                     要求如下：  
-                    1. 假裝你是講者，用人類的方式講話，不要囉唆與投影片無關的資訊。  
-                    2. 回應內容必須嚴格限定在該投影片範圍內，不得擴展到其他部分，不能講好的...避免讓人發現此為 AI 產生。  
-                    3. 避免提到會多久講完。'''
+                    1. 你是一位講者，用像人講話的方式方式。   
+                    2. 直接開始生成內容，不要開頭與、開場白，不要出現「好的」、「我們來看第幾張投影片」。
+                    '''),
+
                 )
                 response_array_of_text.append(remove_markdown(response.text))
                 count += 1
@@ -150,3 +153,31 @@ def gemini_chat(text_array=None, script=None, clients=None, keys=None, max_retri
             raise Exception("Max retries reached. Aborting.")
     
     return response_array_of_text
+
+
+
+'''\
+以下是我們的完整講稿：{script}  
+以下是第 {count} 張 Ptt 內容，前面幾張已經處理完畢：{text}  
+根據上述資料，並從中萃取與此張投影片直接相關的重點，生成一段針對該投影片的講稿，每段講稿儘量在 15 秒內講完。  
+要求如下：  
+1. 你是一位講者，用像人講話的方式方式。   
+2. 直接開始生成內容，不要開頭與、開場白，不要出現「好的」、「我們來看第幾張投影片」。
+'''
+
+"""\
+                        Here is our full script:
+                        {script}
+
+                        Here is the content from PTT for slide {idx+1}; previous slides have been processed:
+                        {text}
+
+                        Based on above, extract the key points directly related to this slide and generate
+                        a ~15-second speaker script segment.
+
+                        Requirements:
+                        1. You are a presenter, speaking in a natural, conversational manner.
+                        2. Keep segments short (≈15 seconds).
+                        3. Do not include opening remarks or “Okay,” “Let’s look at slide X,” etc.
+                        4. Begin generating immediately.
+                        """
