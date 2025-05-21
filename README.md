@@ -1,5 +1,5 @@
 **IMPORTANT NOTICE:**  
-This project was developed by [**Louis-Li-dev**](https://github.com/Louis-Li-dev). The original project can be found at [**Shorter.Video.Generator**](https://github.com/Louis-Li-dev/Shorter.Video.Generator). This fork is specifically tailored for macOS usage.
+This project was developed by [**Louis-Li-dev**](https://github.com/Louis-Li-dev). The original project can be found at [**Shorter.Video.Generator**](https://github.com/Louis-Li-dev/Shorter.Video.Generator).
 
 # Overview
 *This system is specifically designed for you to upload audio or audio and pdf files for AI-Generated Content*
@@ -14,6 +14,12 @@ By taking advantage of this system, you can
 
 Before installing Python dependencies, ensure that your system has the following tools installed:
 
+## Linux
+
+**Linux User Can Skip This One.**
+
+## MacOS
+
 - **Homebrew**: [Installation instructions](https://brew.sh/)
 - **ffmpeg**: Used for video processing  
   ```bash
@@ -24,6 +30,13 @@ Before installing Python dependencies, ensure that your system has the following
   brew install poppler
   ```
 
+## Windows
+
+* Chocolatey:
+* ffmpeg
+  ```
+  choco install ffmpeg
+  ```
 ---
 # Installation
 
@@ -32,14 +45,30 @@ Before installing Python dependencies, ensure that your system has the following
 Clone the project repository from GitHub:
 
 ```bash
-git clone https://github.com/YANGCHIHUNG/shorter-video-generator-mac.git
+git clone https://github.com/YANGCHIHUNG/shorter-video-generator.git
 ```
 
 ---
 ### Step 2: Install Dependencies
 
+**Linux**
+
+For a newly created VM, run the setup script to install dependencies (including ffmpeg and virtual environments):
+
+```
+bash setup.sh
+```
+
+**macOS**
+
   ```bash
-  pip install -r requirements.txt
+  pip install -r mac_requirements.txt
+  ```
+
+**Windows**
+
+  ```bash
+  pip install -r win_requirements.txt
   ```
 ---
 
