@@ -16,7 +16,7 @@ Before installing Python dependencies, ensure that your system has the following
 
 ## Linux
 
-**Linux User Can Skip This One.**
+**Linux User Can Skip This Step.**
 
 ## MacOS
 
