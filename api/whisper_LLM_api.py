@@ -110,9 +110,7 @@ async def api(
     tasks = []
     for idx, response in enumerate(tqdm(response_array, desc="Processing Audio")):
         filename = f"audio_{idx}.mp3"  # Unique name for each file
-        if tts_model == 'edge':
-            tasks.append(edge_tts_example(response, output_audio_dir, filename))  # Save in specified dir
-            
+        tasks.append(edge_tts_example(response, output_audio_dir, filename, tts_model))   
 
     # ✅ Gather all async tasks
     audio_files = await asyncio.gather(*tasks)
@@ -132,6 +130,16 @@ async def api(
     video_clips = []
 
     for img, audio_file in tqdm(zip(pages, audio_files), total=len(audio_files), desc="Processing Videos"):
+        # 如果 audio_file 是 None 或不是字串，直接跳過
+        if not isinstance(audio_file, str) or not audio_file:
+            print(f"⚠️ Skipping slide because no audio: {audio_file}")
+            continue
+
+        # 確認副檔名才進行後續
+        if not audio_file.endswith(".mp3"):
+            print(f"⚠️ Skipping non-mp3 file: {audio_file}")
+            continue
+
         # ✅ Resize Image to Selected Resolution
         img_resized = img.resize((TARGET_WIDTH, TARGET_HEIGHT), Image.LANCZOS)
 
